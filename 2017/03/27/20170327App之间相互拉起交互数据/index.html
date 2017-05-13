@@ -1,0 +1,691 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="App,三方登录," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="App使用第三方登录的基本原理研究。">
+<meta name="keywords" content="App,三方登录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="App之间相互拉起交互数据">
+<meta property="og:url" content="http://yoursite.com/2017/03/27/20170327App之间相互拉起交互数据/index.html">
+<meta property="og:site_name" content="Sweetfish">
+<meta property="og:description" content="App使用第三方登录的基本原理研究。">
+<meta property="og:image" content="http://static.zybuluo.com/Sweetfish/axqny6fkmifuvwktoxce1l06/App%E7%9B%B8%E4%BA%92%E6%8B%89%E8%B5%B7%E4%BA%A4%E4%BA%92.png">
+<meta property="og:image" content="http://static.zybuluo.com/Sweetfish/2026aihi3i1tgeuag4xnlg27/WX20170513-204321@2x.png">
+<meta property="og:image" content="http://static.zybuluo.com/Sweetfish/wn3j163abwgm6bkg17sra486/image_1bc9cbclnph65os303t851g689.png">
+<meta property="og:updated_time" content="2017-05-13T12:45:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="App之间相互拉起交互数据">
+<meta name="twitter:description" content="App使用第三方登录的基本原理研究。">
+<meta name="twitter:image" content="http://static.zybuluo.com/Sweetfish/axqny6fkmifuvwktoxce1l06/App%E7%9B%B8%E4%BA%92%E6%8B%89%E8%B5%B7%E4%BA%A4%E4%BA%92.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/27/20170327App之间相互拉起交互数据/"/>
+
+  <title> App之间相互拉起交互数据 | Sweetfish </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Sweetfish</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">不爱偷懒的懒孩子</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                App之间相互拉起交互数据
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-27T19:31:30+08:00" content="2017-03-27">
+              2017-03-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/App/" itemprop="url" rel="index">
+                    <span itemprop="name">App</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>App使用第三方登录的基本原理研究。</p>
+<a id="more"></a>
+<p><img src="http://static.zybuluo.com/Sweetfish/axqny6fkmifuvwktoxce1l06/App%E7%9B%B8%E4%BA%92%E6%8B%89%E8%B5%B7%E4%BA%A4%E4%BA%92.png" alt="App相互拉起交互.png-87.6kB"></p>
+<h1 id="1-授权登录流程简述"><a href="#1-授权登录流程简述" class="headerlink" title="1. 授权登录流程简述"></a>1. 授权登录流程简述</h1><p>目前主流App为了节约用户注册的繁琐步骤，多采用主流账户体系（如微信、微博等）的授权登录方式让用户登录自己的App，简化流程、方便快捷。</p>
+<p>授权的基本流程如下：（模拟场景[应用A请求应用B授权登录]）</p>
+<ul>
+<li>（1）应用A首先在应用B的<code>开发平台</code>注册自己的应用，获取<code>开发平台</code>授予的AppID和App Secret</li>
+<li>（2）用户手机打开应用A，点击“应用B授权登录”，此事从应用A跳转到应用B的授权页面（并携带参数应用的<code>AppID</code> 和 请求授权的访问域<code>scope</code>）</li>
+<li>（3）应用B首先判断应用A的AppID是否合法，不合法则授权结束</li>
+<li>（4）用户此时在应用B选择是否同意授权（不同意、取消页面、或超时 被认为授权失败）</li>
+<li>（5）用户同意之后，跳转回应用A（携带参数<code>授权是否成功ErrCode</code>、<code>授权码code</code>）</li>
+<li>（6）如果授权成功（<code>ErrCode=0</code>），此时应用A获得应用B的授权码<code>code</code></li>
+<li>（7）应用A使用 <code>AppID</code> <code>App Secret</code> <code>code</code>参数向应用B的<code>开发平台（后台）</code>请求授权令牌token（access_token, refresh_token）</li>
+</ul>
+<p>基本时序图如下所示：</p>
+<p><img src="http://static.zybuluo.com/Sweetfish/2026aihi3i1tgeuag4xnlg27/WX20170513-204321@2x.png" alt="WX20170513-204321@2x.png-174.5kB"></p>
+<h1 id="2-授权登录安全性说明"><a href="#2-授权登录安全性说明" class="headerlink" title="2. 授权登录安全性说明"></a>2. 授权登录安全性说明</h1><p>App之间的授权登录流程，遵循Auth2.0协议。</p>
+<ul>
+<li>应用B通过<code>AppID</code>来判断应用A是否可以被授权</li>
+<li>应用B的 <strong>授权后台</strong> 通过<code>AppID</code> <code>App Secret</code> <code>code</code>来判断应用A是否可以获取token</li>
+</ul>
+<blockquote>
+<p>关于授权访问域<code>scope</code>：<br>授权访问域主要用来界定应用授权之后，可以获取到的账户信息的范围（如用户个人信息，用户头像），访问域中<code>可选</code>的范围会交由用户判断选择。</p>
+</blockquote>
+<p><img src="http://static.zybuluo.com/Sweetfish/wn3j163abwgm6bkg17sra486/image_1bc9cbclnph65os303t851g689.png" alt="image_1bc9cbclnph65os303t851g689.png-294.3kB"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/App/" rel="tag">#App</a>
+          
+            <a href="/tags/三方登录/" rel="tag">#三方登录</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/28/20170228侧滑返回引起ViewController强引用/" rel="next" title="侧滑返回引起ViewController强引用">
+                <i class="fa fa-chevron-left"></i> 侧滑返回引起ViewController强引用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/29/20170329使用BurpSuite抓取iOS的HTTPS报文(测试中间人攻击)/" rel="prev" title="使用BurpSuite抓取iOS的HTTPS报文(测试中间人攻击)">
+                使用BurpSuite抓取iOS的HTTPS报文(测试中间人攻击) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.png"
+               alt="Sweetfish" />
+          <p class="site-author-name" itemprop="name">Sweetfish</p>
+          <p class="site-description motion-element" itemprop="description">敲键盘按快门玩PS的厨子</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.sweetfish.cn" target="_blank" title="Cover">
+                  
+                    <i class="fa fa-fw fa-heartbeat"></i>
+                  
+                  Cover
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sweetfish" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1821742240/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://fish.sweetfish.cn" target="_blank" title="Fish">
+                  
+                    <i class="fa fa-fw fa-camera-retro"></i>
+                  
+                  Fish
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-授权登录流程简述"><span class="nav-number">1.</span> <span class="nav-text">1. 授权登录流程简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-授权登录安全性说明"><span class="nav-number">2.</span> <span class="nav-text">2. 授权登录安全性说明</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sweetfish</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

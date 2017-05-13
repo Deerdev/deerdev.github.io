@@ -1,0 +1,957 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,JS,Hybrid," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="介绍iOS下JS与OC交互的方式。">
+<meta name="keywords" content="iOS,JS,Hybrid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS中JS与OC相互调用的方式">
+<meta property="og:url" content="http://yoursite.com/2016/09/19/20160919iOS中JS与OC相互调用的方式/index.html">
+<meta property="og:site_name" content="Sweetfish">
+<meta property="og:description" content="介绍iOS下JS与OC交互的方式。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/336955-bc55977ae28d8ff9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/336955-3bc7ae3619c68651.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/336955-42d5a8d00a81e280.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/336955-9a500c7f140ebd15.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/336955-ecfdd601fa753bb9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-05-13T11:54:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS中JS与OC相互调用的方式">
+<meta name="twitter:description" content="介绍iOS下JS与OC交互的方式。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/336955-bc55977ae28d8ff9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/19/20160919iOS中JS与OC相互调用的方式/"/>
+
+  <title> iOS中JS与OC相互调用的方式 | Sweetfish </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Sweetfish</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">不爱偷懒的懒孩子</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-link"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS中JS与OC相互调用的方式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-19T13:35:30+08:00" content="2016-09-19">
+              2016-09-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Hybrid/" itemprop="url" rel="index">
+                    <span itemprop="name">Hybrid</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍iOS下JS与OC交互的方式。</p>
+<a id="more"></a>
+<blockquote>
+<p>整理自 Haley_Wong<a href="http://www.jianshu.com/nb/5513092" target="_blank" rel="external">《JS与OC交互》</a></p>
+</blockquote>
+<h2 id="0-Hybrid-App简要介绍"><a href="#0-Hybrid-App简要介绍" class="headerlink" title="0.Hybrid App简要介绍"></a>0.Hybrid App简要介绍</h2><p>讲述Hybrid App，要先了解Native App和Web App的定义。</p>
+<ul>
+<li>Native App是指针对不同的手机操作系统要采用不同的语言和框架进行开发，例如Java(Android), Objective-C(iOS)等；</li>
+<li>Web App即是HTML5 APP框架开发模式，使用HTML5,CSS3以及JavaScript以及服务器端语言来完成开发，Web App具有跨平台的优势。</li>
+</ul>
+<p>根据定义显而易见得出两种开发模式的优劣势，Native App可以利用系统的所有特性，因此做出杰出的性能，然而每次功能升级都必须重新打包、审核再上架，平均浪费近两周的时间。而反观Web App就没有这样的问题，其缺点在于Web语言无法访问很多系统特性，性能不高。</p>
+<p>鉴于二者各有的优劣势，顺理成章的衍生出了介于中间的开发模式Hybrid。其特点是在原生应用中嵌入一个浏览器组件，然后通过某种方式，让原生代码和网页能够双向通讯，结果就是可以在需要原生功能的时候使用原生功能，而适合放在网页端的部分就放在服务器上。某种程度上利用到了两者的优势。另一个优势就是，由于网页技术在iOS和Android上是一样的，所以网页的这部分也就天然可以跨平台了。</p>
+<p>目前中国70%以上的Native APP都已经混合了Web技术，例如淘宝、大众点评、58同城、去哪儿等App都嵌入了大量的HTML5页面。让部分功能在WebView技术基础上缩短开发周期、实现灵活业务调整。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/336955-bc55977ae28d8ff9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">Native</th>
+<th style="text-align:center">Web</th>
+<th style="text-align:center">Hybrid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">开发语言</td>
+<td style="text-align:center">原生语言(OC Java)</td>
+<td style="text-align:center">网页语言(HTML+CSS+JS)</td>
+<td style="text-align:center">网页语言+原生语言</td>
+</tr>
+<tr>
+<td style="text-align:center">跨平台性</td>
+<td style="text-align:center">低</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">高</td>
+</tr>
+<tr>
+<td style="text-align:center">设备访问能力</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">中</td>
+<td style="text-align:center">高</td>
+</tr>
+<tr>
+<td style="text-align:center">开发成本</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">低</td>
+<td style="text-align:center">中</td>
+</tr>
+<tr>
+<td style="text-align:center">用户体验</td>
+<td style="text-align:center">很好</td>
+<td style="text-align:center">差</td>
+<td style="text-align:center">较好</td>
+</tr>
+<tr>
+<td style="text-align:center">安装体验</td>
+<td style="text-align:center">高(商店)</td>
+<td style="text-align:center">中(浏览器)</td>
+<td style="text-align:center">高(商店)</td>
+</tr>
+<tr>
+<td style="text-align:center">升级灵活度</td>
+<td style="text-align:center">低</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">中</td>
+</tr>
+<tr>
+<td style="text-align:center">向后兼容</td>
+<td style="text-align:center">差</td>
+<td style="text-align:center">好</td>
+<td style="text-align:center">好</td>
+</tr>
+<tr>
+<td style="text-align:center">维护更新</td>
+<td style="text-align:center">复杂</td>
+<td style="text-align:center">简单</td>
+<td style="text-align:center">简单</td>
+</tr>
+<tr>
+<td style="text-align:center">高级图形</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">中</td>
+<td style="text-align:center">中</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-目前JS与OC相互调用的方式"><a href="#1-目前JS与OC相互调用的方式" class="headerlink" title="1.目前JS与OC相互调用的方式"></a>1.目前JS与OC相互调用的方式</h2><p>目前主要的JS与OC相互调用方式主要有如下6种：</p>
+<ol>
+<li>在JS 中做一次URL跳转，然后在OC中拦截跳转。（这里分为UIWebView 和 WKWebView两种，UIWebView兼容iOS 6）</li>
+<li>利用WKWebView 的MessageHandler。</li>
+<li>利用系统库JavaScriptCore，来做相互调用。（iOS 7推出）</li>
+<li>利用第三方库WebViewJavascriptBridge。</li>
+<li>利用第三方cordova库，以前叫PhoneGap。（这是一个库平台的库）</li>
+<li>当下盛行的React Native。</li>
+</ol>
+<p>由于目前平台库cordova和React Native依然处于发展中，学习成本高，可以在后续的学习中继续研究。</p>
+<p>以下是对1-4中介绍的方式进行对比：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">URL拦截</th>
+<th style="text-align:center">MessageHandler</th>
+<th style="text-align:center">JavaScriptCore</th>
+<th style="text-align:center">WebViewJavascriptBridge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">优点</td>
+<td style="text-align:center">1.实现简单；2.适合接口少、轻量级的</td>
+<td style="text-align:center">1.不用拦截URL；2.参数传递简单；3.JS中的代码简单、规范</td>
+<td style="text-align:center">JS调用Native方法时，参数的传递更方便</td>
+<td style="text-align:center">比URL拦截方式传递参数更方便</td>
+</tr>
+<tr>
+<td style="text-align:center">缺点</td>
+<td style="text-align:center">1.参数传递和解析复杂；2.安全性较低</td>
+<td style="text-align:center">WKWebView中的方法，只适配iOS8</td>
+<td style="text-align:center">适配iOS7</td>
+<td style="text-align:center">1.第三方库；2.做一次交互，需要执行的js与原生的交互步骤较多，至少有两次；3.需要花时间理解WebViewJavascriptBridge的原理和使用步骤；4.底层也是通过URL拦截的方式实现</td>
+</tr>
+</tbody>
+</table>
+<p><strong>初步考虑，App兼容iOS7选择JavaScriptCore方式，App只兼容iOS8以上，可以采用WKWebView，并使用MessageHandler方式。</strong></p>
+<p>接下来分别介绍1-4中方法。</p>
+<hr>
+<h2 id="2-拦截URL"><a href="#2-拦截URL" class="headerlink" title="2.拦截URL"></a>2.拦截URL</h2><p><img src="http://upload-images.jianshu.io/upload_images/336955-3bc7ae3619c68651.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>URL拦截的方式是用JS发起一个假的URL请求，然后利用UIWebView的代理方法拦截这次请求，解析URL的Scheme，根据Scheme来区分是否是调用OC原生方法还是正常的网页跳转，然后再做相应的处理。</p>
+<h3 id="2-1-UIWwbView中的实现"><a href="#2-1-UIWwbView中的实现" class="headerlink" title="2.1 UIWwbView中的实现"></a>2.1 UIWwbView中的实现</h3><h4 id="创建UIWebView，加载本地HTML"><a href="#创建UIWebView，加载本地HTML" class="headerlink" title="创建UIWebView，加载本地HTML"></a>创建UIWebView，加载本地HTML</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];</div><div class="line">self.webView.delegate = self;</div><div class="line">NSURL *htmlURL = [[NSBundle mainBundle] URLForResource:@&quot;index.html&quot; withExtension:nil];</div><div class="line"></div><div class="line">NSURLRequest *request = [NSURLRequest requestWithURL:htmlURL];</div><div class="line"></div><div class="line">// 如果不想要webView 的回弹效果</div><div class="line">self.webView.scrollView.bounces = NO;</div><div class="line">// UIWebView 滚动的比较慢，这里设置为正常速度</div><div class="line">self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;</div><div class="line">[self.webView loadRequest:request];</div><div class="line">[self.view addSubview:self.webView];</div></pre></td></tr></table></figure>
+<h4 id="本地HTML文件"><a href="#本地HTML文件" class="headerlink" title="本地HTML文件"></a>本地HTML文件</h4><p>本地HTML中定义一个按钮，点击按钮触发调用js发起假的URL请求。</p>
+<p>JS发起自定义Scheme的URL请求的方法：</p>
+<ul>
+<li>JS将需要调用的OC函数，写在自定义URL中。</li>
+<li>OC代码中通过拦截该Scheme来判断是否是自定义的URL。</li>
+<li>解析URL后面的参数，判断调用方法和调用参数。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">&lt;input type=<span class="string">"button"</span> value=<span class="string">"获取定位"</span> onclick=<span class="string">"locationClick()"</span> /&gt;</div><div class="line"></div><div class="line"><span class="comment">//发起假的URL请求</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">loadURL</span>(<span class="params">url</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> iFrame;</div><div class="line">    iFrame = <span class="built_in">document</span>.createElement(<span class="string">"iframe"</span>);</div><div class="line">    iFrame.setAttribute(<span class="string">"src"</span>, url);</div><div class="line">    iFrame.setAttribute(<span class="string">"style"</span>, <span class="string">"display:none;"</span>);</div><div class="line">    iFrame.setAttribute(<span class="string">"height"</span>, <span class="string">"0px"</span>);</div><div class="line">    iFrame.setAttribute(<span class="string">"width"</span>, <span class="string">"0px"</span>);</div><div class="line">    iFrame.setAttribute(<span class="string">"frameborder"</span>, <span class="string">"0"</span>);</div><div class="line">    <span class="built_in">document</span>.body.appendChild(iFrame);</div><div class="line">    <span class="comment">// 发起请求后这个iFrame就没用了，所以把它从dom上移除掉</span></div><div class="line">    iFrame.parentNode.removeChild(iFrame);</div><div class="line">    iFrame = <span class="literal">null</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncAlert</span>(<span class="params">content</span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">               alert(content);</div><div class="line">               &#125;,<span class="number">1</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">locationClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    loadURL(<span class="string">"haleyAction://getLocation"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//OC回调js的函数</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">setLocation</span>(<span class="params">location</span>) </span>&#123;</div><div class="line">    asyncAlert(location);</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"returnValue"</span>).value = location;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在JS中调用OC方法的时，传参数到OC中，就像一个get请求一样，把参数放在后面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function shareClick() &#123;</div><div class="line">    loadURL(&quot;haleyAction://shareClick?title=测试分享的标题&amp;content=测试分享的内容&amp;url=http://www.baidu.com&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>所有的参数都在URL的query中，在OC中处理时，先通过<code>&amp;</code>将字符串拆分，在通过<code>=</code>把参数拆分成key和实际的值。</p>
+<h4 id="OC中拦截URL"><a href="#OC中拦截URL" class="headerlink" title="OC中拦截URL"></a>OC中拦截URL</h4><p>在UIWebView有一个代理方法，可以拦截到每一个链接的Request。return YES，webView就会加载这个链接；return NO，webView就不会加载这个连接。因此，需要在这个拦截的代理方法中处理自定义的URL，从中取出需要调用的OC函数名称。</p>
+<p>这里通过判断scheme是否是自定义的，以此拦截掉自定义的URL请求。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - UIWebViewDelegate</span></div><div class="line">- (<span class="built_in">BOOL</span>)webView:(<span class="built_in">UIWebView</span> *)webView shouldStartLoadWithRequest:(<span class="built_in">NSURLRequest</span> *)request navigationType:(<span class="built_in">UIWebViewNavigationType</span>)navigationType</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSURL</span> *URL = request.URL;</div><div class="line">    <span class="built_in">NSString</span> *scheme = [URL scheme];</div><div class="line">    <span class="keyword">if</span> ([scheme isEqualToString:<span class="string">@"haleyaction"</span>]) &#123;</div><div class="line">        [<span class="keyword">self</span> handleCustomAction:URL];</div><div class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="OC回调JS"><a href="#OC回调JS" class="headerlink" title="OC回调JS"></a>OC回调JS</h4><p>在UIWwbView处理自定义URL请求，以及通过UIWebVIew的方法回调JS代码：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - private method</span></div><div class="line">- (<span class="keyword">void</span>)handleCustomAction:(<span class="built_in">NSURL</span> *)URL</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSString</span> *host = [URL host];</div><div class="line">    <span class="keyword">if</span> ([host isEqualToString:<span class="string">@"getLocation"</span>]) &#123;</div><div class="line">        [<span class="keyword">self</span> getLocation];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)getLocation</div><div class="line">&#123;</div><div class="line">    <span class="comment">// 获取位置信息</span></div><div class="line">    <span class="comment">//......</span></div><div class="line">    <span class="comment">// 将结果返回给JS</span></div><div class="line">    <span class="comment">// 将被调用的JS的函数名和参数写入字符串</span></div><div class="line">    <span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"setLocation('%@')"</span>,<span class="string">@"myNewLocation"</span>];</div><div class="line">    <span class="comment">//回调JS代码</span></div><div class="line">    [<span class="keyword">self</span>.webView stringByEvaluatingJavaScriptFromString:jsStr];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>利用<code>[webView stringByEvaluatingJavaScriptFromString:@&quot;var arr = [3, 4, &#39;abc&#39;];&quot;];</code>,可以往HMTL的JS环境中插入全局变量、JS方法等。</p>
+</blockquote>
+<h3 id="2-2WKWebView实现方式"><a href="#2-2WKWebView实现方式" class="headerlink" title="2.2WKWebView实现方式"></a>2.2WKWebView实现方式</h3><p>由于UIWebView比较耗内存，性能上不太好，而苹果在<code>iOS8</code>中推出了WKWebView。同样的用WKWebView也可以拦截URL，做JS与OC交互。WKWebView与UIWebView拦截URL的处理方式基本一样。除了代理方法和WKWebView的使用不太一样。</p>
+<p>WKWebView的创建有几点不同：</p>
+<ol>
+<li>初始化多了configuration参数，当然这个参数也可以不传，直接使用默认的设置。</li>
+<li>WKWebView的代理有两个navigationDelegate和UIDelegate。我们要拦截URL，就要通过navigationDelegate的一个代理方法来实现。如果在HTML中要使用alert等弹窗，就必须得实现UIDelegate的相应代理方法。</li>
+<li>在iOS9之前，WKWebView加载本地HTML会有一些问题。（不能加载本地HTML，或者部分CSS/本地图片加载不了等）</li>
+</ol>
+<h4 id="WKWebView的创建："><a href="#WKWebView的创建：" class="headerlink" title="WKWebView的创建："></a>WKWebView的创建：</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">WKWebViewConfiguration</span> *configuration = [[<span class="built_in">WKWebViewConfiguration</span> alloc] init];</div><div class="line">configuration.userContentController = [<span class="built_in">WKUserContentController</span> new];</div><div class="line"></div><div class="line"><span class="built_in">WKPreferences</span> *preferences = [<span class="built_in">WKPreferences</span> new];</div><div class="line">preferences.javaScriptCanOpenWindowsAutomatically = <span class="literal">YES</span>;</div><div class="line">preferences.minimumFontSize = <span class="number">30.0</span>;</div><div class="line">configuration.preferences = preferences;</div><div class="line"></div><div class="line"><span class="keyword">self</span>.webView = [[<span class="built_in">WKWebView</span> alloc] initWithFrame:<span class="keyword">self</span>.view.frame configuration:configuration];</div><div class="line"></div><div class="line"><span class="built_in">NSString</span> *urlStr = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"index.html"</span> ofType:<span class="literal">nil</span>];</div><div class="line"><span class="built_in">NSURL</span> *fileURL = [<span class="built_in">NSURL</span> fileURLWithPath:urlStr];</div><div class="line">[<span class="keyword">self</span>.webView loadFileURL:fileURL allowingReadAccessToURL:fileURL];</div><div class="line"></div><div class="line"><span class="keyword">self</span>.webView.navigationDelegate = <span class="keyword">self</span>;</div><div class="line">[<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.webView];</div></pre></td></tr></table></figure>
+<h4 id="WKWebView中拦截URL的方法："><a href="#WKWebView中拦截URL的方法：" class="headerlink" title="WKWebView中拦截URL的方法："></a>WKWebView中拦截URL的方法：</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - WKNavigationDelegate</span></div><div class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> *)webView decidePolicyForNavigationAction:(<span class="built_in">WKNavigationAction</span> *)navigationAction decisionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">WKNavigationActionPolicy</span>))decisionHandler</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSURL</span> *URL = navigationAction.request.URL;</div><div class="line">    <span class="built_in">NSString</span> *scheme = [URL scheme];</div><div class="line">    <span class="keyword">if</span> ([scheme isEqualToString:<span class="string">@"haleyaction"</span>]) &#123;</div><div class="line">        [<span class="keyword">self</span> handleCustomAction:URL];</div><div class="line">        decisionHandler(<span class="built_in">WKNavigationActionPolicyCancel</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    decisionHandler(<span class="built_in">WKNavigationActionPolicyAllow</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>实现这个代理方法，必须得调用decisionHandler这个block，否则会导致app 崩溃。block参数是个枚举类型，WKNavigationActionPolicyCancel代表取消加载，相当于UIWebView的代理方法<code>return NO</code>的情况；WKNavigationActionPolicyAllow代表允许加载，相当于UIWebView的代理方法中<code>return YES</code>的情况。</p>
+</blockquote>
+<h4 id="WKWebView中OC调用JS方法："><a href="#WKWebView中OC调用JS方法：" class="headerlink" title="WKWebView中OC调用JS方法："></a>WKWebView中OC调用JS方法：</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)getLocation</div><div class="line">&#123;</div><div class="line">    <span class="comment">// 获取位置信息</span></div><div class="line"></div><div class="line">    <span class="comment">// 将结果返回给js</span></div><div class="line">    <span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"setLocation('%@')"</span>,<span class="string">@"myNewLocation"</span>];</div><div class="line">    [<span class="keyword">self</span>.webView evaluateJavaScript:jsStr completionHandler:^(<span class="keyword">id</span> _Nullable result, <span class="built_in">NSError</span> * _Nullable error) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@----%@"</span>,result, error);</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>evaluateJavaScript:completionHandler:没有返回值，JS 执行成功还是失败会在completionHandler 中返回。所以使用这个API 就可以避免执行耗时的JS，或者alert 导致界面卡住的问题。</p>
+</blockquote>
+<h2 id="3-MessageHandler"><a href="#3-MessageHandler" class="headerlink" title="3.MessageHandler"></a>3.MessageHandler</h2><p><img src="http://upload-images.jianshu.io/upload_images/336955-42d5a8d00a81e280.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>利用WKWebView的新特性MessageHandler来实现JS调用原生方法。</p>
+<h3 id="3-1MessageHandler的好处"><a href="#3-1MessageHandler的好处" class="headerlink" title="3.1MessageHandler的好处"></a>3.1MessageHandler的好处</h3><ol>
+<li>在JS中写起来简单，不用再用创建URL的方式那么麻烦了。</li>
+<li>JS传递参数更方便。使用拦截URL的方式传递参数，只能把参数拼接在后面，如果遇到要传递的参数中有特殊字符，如&amp;、=、?等，必须得转换，否则参数解析肯定会出错。</li>
+<li>使用MessageHandler就可以避免特殊字符引起的问题。</li>
+</ol>
+<p>例如传递的url是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://www.baidu.com/share/openShare.htm?share_uuid=shdfxdfdsfsdf&amp;name=1234556</div></pre></td></tr></table></figure>
+<p>使用拦截URL的JS调用方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">loadURL(&quot;firstClick://shareClick?title=分享的标题&amp;content=分享的内容&amp;url=链接地址&amp;imagePath=图片地址&quot;);</div></pre></td></tr></table></figure>
+<p>将上面的url 放入链接地址这里后，难以区分share_uuid是其他参数，还是url里附带的参数。</p>
+<h3 id="3-2实现原理"><a href="#3-2实现原理" class="headerlink" title="3.2实现原理"></a>3.2实现原理</h3><p>WKWebView初始化时，有一个参数叫configuration，它是WKWebViewConfiguration类型的参数，而WKWebViewConfiguration有一个属性叫userContentController，它又是WKUserContentController类型的参数。WKUserContentController对象有一个方法- addScriptMessageHandler:name:，我把这个功能简称为MessageHandler。</p>
+<p><code>- addScriptMessageHandler:name:</code>有两个参数，第一个参数是userContentController的代理对象，第二个参数是JS里发送postMessage的对象。</p>
+<p>所以要使用MessageHandler功能，就必须要实现WKScriptMessageHandler协议。</p>
+<p>在该API的描述里可以看到在JS中的使用方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.webkit.messageHandlers.&lt;name&gt;.postMessage(&lt;messageBody&gt;)</div><div class="line">//其中&lt;name&gt;，就是上面方法里的第二个参数`name`。</div><div class="line">//例如我们调用API的时候第二个参数填@"Share"，那么在JS里就是:</div><div class="line">//window.webkit.messageHandlers.Share.postMessage(&lt;messageBody&gt;)</div><div class="line">//&lt;messageBody&gt;是一个键值对，键是body，值可以有多种类型的参数。</div><div class="line">// 在`WKScriptMessageHandler`协议中，我们可以看到mssage是`WKScriptMessage`类型，有一个属性叫body。</div><div class="line">// 而注释里写明了body 的类型：Allowed types are NSNumber, NSString, NSDate, NSArray, NSDictionary, and NSNull.</div></pre></td></tr></table></figure>
+<h3 id="3-3OC中配置MessageHandler"><a href="#3-3OC中配置MessageHandler" class="headerlink" title="3.3OC中配置MessageHandler"></a>3.3OC中配置MessageHandler</h3><p>MessageHandler的使用：<br>1.创建WKWebViewConfiguration对象，配置各个API对应的MessageHandler。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">WKWebViewConfiguration</span> *configuration = [[<span class="built_in">WKWebViewConfiguration</span> alloc] init];</div><div class="line">    configuration.userContentController = [<span class="built_in">WKUserContentController</span> new];</div><div class="line"></div><div class="line">    [configuration.userContentController addScriptMessageHandler:<span class="keyword">self</span> name:<span class="string">@"ScanAction"</span>];</div><div class="line">    [configuration.userContentController addScriptMessageHandler:<span class="keyword">self</span> name:<span class="string">@"Location"</span>];</div><div class="line">    [configuration.userContentController addScriptMessageHandler:<span class="keyword">self</span> name:<span class="string">@"Share"</span>];</div><div class="line"></div><div class="line">    <span class="built_in">WKPreferences</span> *preferences = [<span class="built_in">WKPreferences</span> new];</div><div class="line">    preferences.javaScriptCanOpenWindowsAutomatically = <span class="literal">YES</span>;</div><div class="line">    preferences.minimumFontSize = <span class="number">40.0</span>;</div><div class="line">    configuration.preferences = preferences;</div></pre></td></tr></table></figure>
+<p>2.创建WKWebView。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.webView = [[<span class="built_in">WKWebView</span> alloc] initWithFrame:<span class="keyword">self</span>.view.frame configuration:configuration];</div><div class="line"></div><div class="line">    <span class="built_in">NSString</span> *urlStr = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"index.html"</span> ofType:<span class="literal">nil</span>];</div><div class="line">    <span class="built_in">NSURL</span> *fileURL = [<span class="built_in">NSURL</span> fileURLWithPath:urlStr];</div><div class="line">    [<span class="keyword">self</span>.webView loadFileURL:fileURL allowingReadAccessToURL:fileURL];</div><div class="line"></div><div class="line">    <span class="keyword">self</span>.webView.navigationDelegate = <span class="keyword">self</span>;</div><div class="line">    <span class="keyword">self</span>.webView.UIDelegate = <span class="keyword">self</span>;</div><div class="line">    [<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.webView];</div></pre></td></tr></table></figure>
+<p>3.实现协议方法。<br>这里实现了两个协议&lt; WKUIDelegate,WKScriptMessageHandler &gt;，WKUIDelegate是因为需要在JS中弹出alert。WKScriptMessageHandler是用来处理JS调用OC方法的请求。</p>
+<p>先看实现协议方法的示例代码：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - WKScriptMessageHandler</span></div><div class="line">- (<span class="keyword">void</span>)userContentController:(<span class="built_in">WKUserContentController</span> *)userContentController didReceiveScriptMessage:(<span class="built_in">WKScriptMessage</span> *)message</div><div class="line">&#123;</div><div class="line"><span class="comment">//    message.body  --  Allowed types are NSNumber, NSString, NSDate, NSArray,NSDictionary, and NSNull.</span></div><div class="line">    <span class="keyword">if</span> ([message.name isEqualToString:<span class="string">@"ScanAction"</span>]) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"扫一扫"</span>);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ([message.name isEqualToString:<span class="string">@"Location"</span>]) &#123;</div><div class="line">        [<span class="keyword">self</span> getLocation];</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ([message.name isEqualToString:<span class="string">@"Share"</span>]) &#123;</div><div class="line">        [<span class="keyword">self</span> shareWithParams:message.body];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>WKScriptMessage有两个关键属性name和body。</p>
+<p>因为已经给每一个OC方法取了一个name，那么就可以根据name来区分执行不同的方法。body中存着JS要给OC传的参数。关于参数body的解析，举一个body中放字典的例子，解析JS调用OC实现分享的参数：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)shareWithParams:(<span class="built_in">NSDictionary</span> *)tempDic</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (![tempDic isKindOfClass:[<span class="built_in">NSDictionary</span> <span class="keyword">class</span>]]) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 分解参数</span></div><div class="line">    <span class="built_in">NSString</span> *title = [tempDic objectForKey:<span class="string">@"title"</span>];</div><div class="line">    <span class="built_in">NSString</span> *content = [tempDic objectForKey:<span class="string">@"content"</span>];</div><div class="line">    <span class="built_in">NSString</span> *url = [tempDic objectForKey:<span class="string">@"url"</span>];</div><div class="line">    <span class="comment">// 在这里执行分享的操作</span></div><div class="line">    <span class="comment">// ......</span></div><div class="line">    <span class="comment">// 将分享结果返回给js</span></div><div class="line">    <span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"shareResult('%@','%@','%@')"</span>,title,content,url];</div><div class="line">    [<span class="keyword">self</span>.webView evaluateJavaScript:jsStr completionHandler:^(<span class="keyword">id</span> _Nullable result, <span class="built_in">NSError</span> * _Nullable error) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@----%@"</span>,result, error);</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-4JS中的使用"><a href="#3-4JS中的使用" class="headerlink" title="3.4JS中的使用"></a>3.4JS中的使用</h3><p>处理HTML中JS调用，JS部分代码进行改动：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 传null</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">scanClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">window</span>.webkit.messageHandlers.ScanAction.postMessage(<span class="literal">null</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">// 传字典              </span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">shareClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">window</span>.webkit.messageHandlers.Share.postMessage(&#123;<span class="attr">title</span>:<span class="string">'测试分享的标题'</span>,<span class="attr">content</span>:<span class="string">'测试分享的内容'</span>,<span class="attr">url</span>:<span class="string">'http://www.baidu.com'</span>&#125;);</div><div class="line">&#125;</div><div class="line"><span class="comment">// 传字符串</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">playSound</span>(<span class="params"></span>) </span>&#123; </div><div class="line">    <span class="built_in">window</span>.webkit.messageHandlers.PlaySound.postMessage(<span class="string">'shake_sound_male.wav'</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">// 传数组</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">colorClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">window</span>.webkit.messageHandlers.Color.postMessage([<span class="number">67</span>,<span class="number">205</span>,<span class="number">128</span>,<span class="number">0.5</span>]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-5OC调用JS"><a href="#3-5OC调用JS" class="headerlink" title="3.5OC调用JS"></a>3.5OC调用JS</h3><p>这里使用WKWebView实现OC调用JS方法跟WKWebView使用URL拦截是一样的，还是利用<br><code>- evaluateJavaScript:completionHandler:</code>方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 将分享结果返回给js</span></div><div class="line">    <span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"shareResult('%@','%@','%@')"</span>,title,content,url];</div><div class="line">    [<span class="keyword">self</span>.webView evaluateJavaScript:jsStr completionHandler:^(<span class="keyword">id</span> _Nullable result, <span class="built_in">NSError</span> * _Nullable error) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@----%@"</span>,result, error);</div><div class="line">    &#125;];</div></pre></td></tr></table></figure>
+<h2 id="4-JavaScriptCore"><a href="#4-JavaScriptCore" class="headerlink" title="4.JavaScriptCore"></a>4.JavaScriptCore</h2><p><img src="http://upload-images.jianshu.io/upload_images/336955-9a500c7f140ebd15.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>JavaScriptCore自iOS7之后出现，用Objective-C把WebKit的JavaScript引擎封装了一下，提供了简单快捷的方式与JavaScript交互。</p>
+<p>特点：</p>
+<ul>
+<li>JS中调用OC方法更简单，参数的传递也更加简单</li>
+<li>支持iOS7以上</li>
+</ul>
+<h3 id="4-1JavaScriptCore说明"><a href="#4-1JavaScriptCore说明" class="headerlink" title="4.1JavaScriptCore说明"></a>4.1JavaScriptCore说明</h3><p>JavaScriptCore是一个iOS7新添加的框架，使用前需要先导入JavaScriptCore.framework。在JavaScriptCore.h中可以看到，该框架主要的类有五个：</p>
+<ul>
+<li><code>JSVirtualMachine</code>直译是JS虚拟机，也就是说JavaScript是在一个虚拟的环境中执行，而JSVirtualMachine为其执行提供底层资源。</li>
+<li><code>JSContext</code>是为JavaScript的执行提供运行环境，所有的JavaScript的执行都必须在JSContext环境中。JSContext也管理JSVirtualMachine中对象的生命周期。每一个JSValue对象都要强引用关联一个JSContext。当与某JSContext对象关联的所有JSValue释放后，JSContext也会被释放。</li>
+<li><code>JSValue</code>都是通过JSContext返回或者创建的，并没有构造方法。JSValue包含了每一个JavaScript类型的值，通过JSValue可以将Objective-C中的类型转换为JavaScript中的类型，也可以将JavaScript中的类型转换为Objective-C中的类型。</li>
+<li><code>JSManagedValue</code>主要用途是解决JSValue对象在Objective-C堆上的安全引用问题。把JSValue保存进Objective-C堆对象中是不正确的，这很容易引发循环引用，而导致JSContext不能释放。但是不常用。</li>
+<li><code>JSExport</code>是一个协议类，但是该协议并没有任何属性和方法。可以自定义一个协议类，继承自JSExport。无论在JSExport里声明的属性、实例方法还是类方法，继承的协议都会自动的提供给任何JavaScript代码。因此，只需要在自定义的协议类中，添加上属性和方法就可以了。</li>
+</ul>
+<h3 id="4-2实现步骤"><a href="#4-2实现步骤" class="headerlink" title="4.2实现步骤"></a>4.2实现步骤</h3><p>1.创建UIWebView，并加载本地HTML。（同上）<br>2.JS代码，JS的调用更简单</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">shareClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">//直接通过share()调用原生OC方法</span></div><div class="line">    share(<span class="string">'测试分享的标题'</span>,<span class="string">'测试分享的内容'</span>,<span class="string">'url=http://www.baidu.com'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">shareResult</span>(<span class="params">channel_id,share_channel,share_url</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> content = channel_id+<span class="string">","</span>+share_channel+<span class="string">","</span>+share_url;</div><div class="line">    asyncAlert(content);</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"returnValue"</span>).value = content;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">locationClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">//直接通过getLocation()调用原生OC方法</span></div><div class="line">    getLocation();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">setLocation</span>(<span class="params">location</span>) </span>&#123;</div><div class="line">    asyncAlert(location);</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"returnValue"</span>).value = location;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.OC中添加JS将要调用的原生OC方法</p>
+<p><strong>主要在JSContext中定义JS的方法。</strong></p>
+<p>在HMTL加载成功的回调方法<code>- (void)webViewDidFinishLoad:(UIWebView *)webView</code>中添加要调用的原生OC方法:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - UIWebViewDelegate</span></div><div class="line">- (<span class="keyword">void</span>)webViewDidFinishLoad:(<span class="built_in">UIWebView</span> *)webView</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"webViewDidFinishLoad"</span>);</div><div class="line"></div><div class="line">    [<span class="keyword">self</span> addCustomActions];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此处，将所有要添加的功能方法，集中到addCustomActions方法中添加：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - private method</span></div><div class="line">- (<span class="keyword">void</span>)addCustomActions</div><div class="line">&#123;</div><div class="line">    <span class="comment">// 创建JSContext</span></div><div class="line">    JSContext *context = [<span class="keyword">self</span>.webView valueForKeyPath:<span class="string">@"documentView.webView.mainFrame.javaScriptContext"</span>];</div><div class="line"></div><div class="line">    [<span class="keyword">self</span> addScanWithContext:context];</div><div class="line">    [<span class="keyword">self</span> addLocationWithContext:context];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再实现每一个小功能：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)addShareWithContext:(JSContext *)context</div><div class="line">&#123;</div><div class="line">    __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</div><div class="line">    </div><div class="line">    <span class="comment">// 创建函数</span></div><div class="line">    context[<span class="string">@"share"</span>] = ^() &#123;</div><div class="line">        <span class="built_in">NSArray</span> *args = [JSContext currentArguments];</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (args.count &lt; <span class="number">3</span>) &#123;</div><div class="line">            <span class="keyword">return</span> ;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="built_in">NSString</span> *title = [args[<span class="number">0</span>] toString];</div><div class="line">        <span class="built_in">NSString</span> *content = [args[<span class="number">1</span>] toString];</div><div class="line">        <span class="built_in">NSString</span> *url = [args[<span class="number">2</span>] toString];</div><div class="line">        <span class="comment">// 在这里执行分享的操作...</span></div><div class="line"></div><div class="line">        <span class="comment">// 将分享结果返回给js</span></div><div class="line">        <span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"shareResult('%@','%@','%@')"</span>,title,content,url];</div><div class="line">        [[JSContext currentContext] evaluateScript:jsStr];</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>JS要调用的原生OC方法，可以在viewDidLoad webView被创建后就添加好，但最好是在网址加载成功后再添加，以避免无法预料的乱入Bug。</li>
+<li>block中的执行环境是在子线程中。奇怪的是竟然可以更新部分UI，例如给view设置背景色，调用webView执行js等，但是弹出原生alertView就会在控制台报子线程操作UI的错误信息。</li>
+<li>避免循环引用，因为block会持有外部变量，而JSContext也会强引用它所有的变量，因此在block中调用self时，要用__weak转一下。而且在block内不要使用外部的context以及JSValue，都会导致循环引用。如果要使用context可以使用[JSContext currentContext]。当然我们可以将JSContext和JSValue当做block的参数传进去，这样就可以使用啦。</li>
+</ol>
+</blockquote>
+<p>3.OC调用JS方法<br>OC调用JS方法有多种方式，首先介绍使用JavaScriptCore框架的方式。<br><strong>方式1</strong><br>使用JSContext的方法- evaluateScript，可以实现OC调用JS方法。<br>下面是一个调用JS中payResult方法的示例代码：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"payResult('%@')"</span>,<span class="string">@"支付成功"</span>];</div><div class="line">[[JSContext currentContext] evaluateScript:jsStr];</div></pre></td></tr></table></figure>
+<p><strong>方式2</strong><br>使用JSValue的方法- callWithArguments，也可以实现OC调用JS方法。<br>下面这个示例代码依然是调用JS中的payResult:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">JSContext *context = [<span class="keyword">self</span>.webView valueForKeyPath:<span class="string">@"documentView.webView.mainFrame.javaScriptContext"</span>];</div><div class="line"></div><div class="line">[context[<span class="string">@"payResult"</span>] callWithArguments:@[<span class="string">@"支付弹窗"</span>]];</div></pre></td></tr></table></figure>
+<p>当然，如果是在执行原生OC方法之后，想要在OC执行完操作后，将结果回调给JS时，可以这样写：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)addPayActionWithContext:(JSContext *)context</div><div class="line">&#123;</div><div class="line">    context[<span class="string">@"payAction"</span>] = ^() &#123;</div><div class="line">        <span class="built_in">NSArray</span> *args = [JSContext currentArguments];</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (args.count &lt; <span class="number">4</span>) &#123;</div><div class="line">            <span class="keyword">return</span> ;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="built_in">NSString</span> *orderNo = [args[<span class="number">0</span>] toString];</div><div class="line">        <span class="built_in">NSString</span> *channel = [args[<span class="number">1</span>] toString];</div><div class="line">        <span class="keyword">long</span> <span class="keyword">long</span> amount = [[args[<span class="number">2</span>] toNumber] longLongValue];</div><div class="line">        <span class="built_in">NSString</span> *subject = [args[<span class="number">3</span>] toString];</div><div class="line"></div><div class="line">        <span class="comment">// 支付操作</span></div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"orderNo:%@---channel:%@---amount:%lld---subject:%@"</span>,orderNo,channel,amount,subject);</div><div class="line">        <span class="comment">// 将支付结果返回给js</span></div><div class="line">        [[JSContext currentContext][<span class="string">@"payResult"</span>] callWithArguments:@[<span class="string">@"支付成功"</span>]];</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>方式3</strong><br>同上，利用UIWebView的API：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"payResult('%@')"</span>,<span class="string">@"支付成功"</span>];</div><div class="line">[weakSelf.webView stringByEvaluatingJavaScriptFromString:jsStr];</div></pre></td></tr></table></figure>
+<h2 id="5-WebViewJavascriptBridge"><a href="#5-WebViewJavascriptBridge" class="headerlink" title="5.WebViewJavascriptBridge"></a>5.WebViewJavascriptBridge</h2><p><img src="http://upload-images.jianshu.io/upload_images/336955-ecfdd601fa753bb9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>WebViewJavascriptBridge是一个第三方的JS与OC交互的库，在UIWebView和WKWebView下都可以使用，但是使用方法略有不同。UIWebView中使用WebViewJavascriptBridge来达到JS与OC互相调用的目的，WKWebView使用的是WKWebViewJavascriptBridge。下面以UIWebVIew为例。</p>
+<p>利用WebViewJavascriptBridge来实现JS与OC的交互的优点：</p>
+<ul>
+<li>获取参数时，更方便一些，如果参数中有一些特殊符号或者url带参数，能够很好的解析。</li>
+</ul>
+<p>也有一些缺点：</p>
+<ul>
+<li>做一次交互，需要执行的js 与原生的交互步骤较多，至少有两次。</li>
+<li>需要花较多的时间，理解WebViewJavascriptBridge的原理和使用步骤。</li>
+</ul>
+<h3 id="5-1UIWebView中的实现"><a href="#5-1UIWebView中的实现" class="headerlink" title="5.1UIWebView中的实现"></a>5.1UIWebView中的实现</h3><p>1.添加第三方库<br>2.创建UIWebView<br>在viewDidLoad中创建：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.webView = [[<span class="built_in">UIWebView</span> alloc] initWithFrame:<span class="keyword">self</span>.view.frame];</div><div class="line">[<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.webView];</div><div class="line"></div><div class="line"><span class="built_in">NSURL</span> *htmlURL = [[<span class="built_in">NSBundle</span> mainBundle] URLForResource:<span class="string">@"index.html"</span> withExtension:<span class="literal">nil</span>];</div><div class="line"><span class="built_in">NSURLRequest</span> *request = [<span class="built_in">NSURLRequest</span> requestWithURL:htmlURL];</div><div class="line"></div><div class="line"><span class="comment">// UIWebView 滚动的比较慢，这里设置为正常速度</span></div><div class="line"><span class="keyword">self</span>.webView.scrollView.decelerationRate = <span class="built_in">UIScrollViewDecelerationRateNormal</span>;</div><div class="line">[<span class="keyword">self</span>.webView loadRequest:request];</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这里不需要为UIWebView设置代理，因为在创建WebViewJavascriptBridge的时候，UIWebView的代理已经被赋值给了WebViewJavascriptBridge。</p>
+</blockquote>
+<p>3.创建WebViewJavascriptBridge<br>因为WebViewJavascriptBridge实例，在控制中多个地方用到，因此最好定义一个property或者实例变量存起来。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">_webViewBridge = [WebViewJavascriptBridge bridgeForWebView:<span class="keyword">self</span>.webView];</div><div class="line"><span class="comment">// &#123;setWebViewDelegate&#125;这个方法，可以将UIWebView的代理，从_webViewBridge中再传递出来。</span></div><div class="line"><span class="comment">// 所以如果你要在控制器中实现UIWebView的代理方法时，添加下面这样代码，否则可以不写。</span></div><div class="line">[_webViewBridge setWebViewDelegate:<span class="keyword">self</span>];</div></pre></td></tr></table></figure>
+<p>在bridgeForWebView:中可以看到UIWebView的代理设置</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">+ (<span class="keyword">instancetype</span>)bridgeForWebView:(WVJB_WEBVIEW_TYPE*)webView &#123;</div><div class="line">    WebViewJavascriptBridge* bridge = [[<span class="keyword">self</span> alloc] init];</div><div class="line">    [bridge _platformSpecificSetup:webView];</div><div class="line">    <span class="keyword">return</span> bridge;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 上面方法调用了这个方法</span></div><div class="line">- (<span class="keyword">void</span>) _platformSpecificSetup:(WVJB_WEBVIEW_TYPE*)webView &#123;</div><div class="line">    _webView = webView;</div><div class="line">    _webView.delegate = <span class="keyword">self</span>;</div><div class="line">    _base = [[WebViewJavascriptBridgeBase alloc] init];</div><div class="line">    _base.delegate = <span class="keyword">self</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>4.注册JS要调用的OC函数</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - private method</span></div><div class="line">- (<span class="keyword">void</span>)registerNativeFunctions</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">self</span> registShareFunction];</div><div class="line">    [<span class="keyword">self</span> registLocationFunction];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)registShareFunction</div><div class="line">&#123;</div><div class="line">    <span class="comment">// 所有JS需要调用的原生功能都要先用registerHandler注册一下</span></div><div class="line">    [_webViewBridge registerHandler:<span class="string">@"shareClick"</span> handler:^(<span class="keyword">id</span> data, WVJBResponseCallback responseCallback) &#123;</div><div class="line">        <span class="comment">// data的类型与JS中传的参数有关</span></div><div class="line">        <span class="built_in">NSDictionary</span> *tempDic = data;</div><div class="line">        <span class="comment">// 在这里执行分享的操作</span></div><div class="line">        <span class="built_in">NSString</span> *title = [tempDic objectForKey:<span class="string">@"title"</span>];</div><div class="line">        <span class="built_in">NSString</span> *content = [tempDic objectForKey:<span class="string">@"content"</span>];</div><div class="line">        <span class="built_in">NSString</span> *url = [tempDic objectForKey:<span class="string">@"url"</span>];</div><div class="line"></div><div class="line">        <span class="comment">// 将分享的结果返回到JS中</span></div><div class="line">        <span class="built_in">NSString</span> *result = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"分享成功:%@,%@,%@"</span>,title,content,url];</div><div class="line">        responseCallback(result);</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>- (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler</code>该方法有两个参数：第一个参数handlerName，是对这个功能起的一个别名；第二个参数handler，是个block，也就是Native实现的功能。JS要调用的Native实现其实就是block的{}内的代码功能。</p>
+<p>5.HTML中JS代码的书写（JS调用OC）<br>由于WebViewJavascriptBridge也是拦截URL来实现的调用原生功能，所以实现方式和拦截URL的方式差不多。</p>
+<p>HTML中有一个必须要添加的JS方法，然后需要自动调用一次该方法。该方法是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">function setupWebViewJavascriptBridge(callback) &#123;</div><div class="line">    if (window.WebViewJavascriptBridge) &#123; return callback(WebViewJavascriptBridge); &#125;</div><div class="line">    if (window.WVJBCallbacks) &#123; return window.WVJBCallbacks.push(callback); &#125;</div><div class="line">    window.WVJBCallbacks = [callback];</div><div class="line">    var WVJBIframe = document.createElement('iframe');</div><div class="line">    WVJBIframe.style.display = 'none';</div><div class="line">    WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';</div><div class="line">    document.documentElement.appendChild(WVJBIframe);</div><div class="line">    setTimeout(function() &#123; document.documentElement.removeChild(WVJBIframe) &#125;, 0)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这个方法的参数是一个function，这个方法的作用主要是在第一次加载HTML的时候起作用，目的是加载一次<code>wvjbscheme://__BRIDGE_LOADED__</code>，来触发往HTML中注册一些已经写好的JS方法。</p>
+<p>添加完setupWebViewJavascriptBridge方法，需要在JS中主动调用一次该方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">setupWebViewJavascriptBridge(<span class="function"><span class="keyword">function</span>(<span class="params">bridge</span>) </span>&#123;</div><div class="line">     bridge.registerHandler(<span class="string">'testJavascriptHandler'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data, responseCallback</span>) </span>&#123;</div><div class="line">        alert(<span class="string">'JS方法被调用:'</span>+data);</div><div class="line">        responseCallback(<span class="string">'js执行过了'</span>);</div><div class="line">     &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>Native需要调用的JS功能，也是需要先注册，然后再执行。如果Native需要调用的JS功能有多个，那么这些功能都要在这里先注册，注册之后才能够被Native调用。</p>
+<p>JS中这个方法的作用:</p>
+<blockquote>
+<ol>
+<li>首先调用setupWebViewJavascriptBridge，第一次执行的时候，由于window.WebViewJavascriptBridge和window.WVJBCallbacks都不存在，所以会继续往下执行，将参数callback（它是一个function）装进数组赋值给window.WVJBCallbacks。<br>js 支持动态添加属性并赋值，这里window.WVJBCallbacks = [callback];就是动态添加属性，并赋值。另外js中的全局变量都可以使用window.xxxx来调用；动态添加的属性也可以不加window.，直接使用。</li>
+<li>WebViewJavascriptBridge 帮助JS调用Native的URL有两种，一种是<code>wvjbscheme://__BRIDGE_LOADED__</code>；而另一种是<code>wvjbscheme://__WVJB_QUEUE_MESSAGE__</code>。前者只有在调用setupWebViewJavascriptBridge的时候执行一次，一般来说这个URL如果没有页面应该只会执行一次。第二种URL所有js调用Native功能时，都会使用到。</li>
+<li>在拦截到自定义的URL时，WebViewJavascriptBridge分了三种情况，如果是<code>wvjbscheme://__BRIDGE_LOADED__</code>，就往HMTL中注入已经写好的js，这个js在WebViewJavascriptBridge_JS中；如果是<code>wvjbscheme://__WVJB_QUEUE_MESSAGE__</code>,那就利用stringByEvaluatingJavaScriptFromString，取回调用js中callHandler传进去的参数。然后再从WebViewJavascriptBridge之前保存的Native方法对应的block，调用对应的block。</li>
+</ol>
+</blockquote>
+<p>6.JS调用Native<br>利用之前注入的JS方法callHandler就可以调用Native功能：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">shareClick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> params = &#123;<span class="string">'title'</span>:<span class="string">'测试分享的标题'</span>,<span class="string">'content'</span>:<span class="string">'测试分享的内容'</span>,<span class="string">'url'</span>:<span class="string">'http://www.baidu.com'</span>&#125;;</div><div class="line">    WebViewJavascriptBridge.callHandler(<span class="string">'shareClick'</span>,params,<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</div><div class="line">         alert(response);</div><div class="line">        <span class="built_in">document</span>.getElementById(<span class="string">"returnValue"</span>).value = response;</div><div class="line">     &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里callHandler前的WebViewJavascriptBridge，其实就是上一步注入到JS中的代码中，动态创建属性，动态赋值的属性。如下代码片段可以在WebViewJavascriptBridge_JS中找到。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.WebViewJavascriptBridge = &#123;</div><div class="line">  <span class="attr">registerHandler</span>: registerHandler,</div><div class="line">  <span class="attr">callHandler</span>: callHandler,</div><div class="line">  <span class="attr">disableJavscriptAlertBoxSafetyTimeout</span>: disableJavscriptAlertBoxSafetyTimeout,</div><div class="line">  <span class="attr">_fetchQueue</span>: _fetchQueue,</div><div class="line">  <span class="attr">_handleMessageFromObjC</span>: _handleMessageFromObjC</div><div class="line"> &#125;;</div></pre></td></tr></table></figure>
+<p>而callHandler 内部调用了另一个JS function _doSend，而_doSend内部其实，就是把handlerName和参数data，再加上callbackId装成键值对，然后保存到数组sendMessageQueue，同时加载一次<code>wvjbscheme://__WVJB_QUEUE_MESSAGE__</code>。<br>到此，利用WebViewJavascriptBridge实现JS调用iOS Native就完成了。</p>
+<p>7.Native主动调用js功能<br>Native主动调用js的功能时，需要先在js中为要调用的功能注册一个别名。</p>
+<ul>
+<li>js注册Native要调用的功能</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">setupWebViewJavascriptBridge(<span class="function"><span class="keyword">function</span>(<span class="params">bridge</span>) </span>&#123;</div><div class="line">     bridge.registerHandler(<span class="string">'testJSFunction'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data, responseCallback</span>) </span>&#123;</div><div class="line">        alert(<span class="string">'JS方法被调用:'</span>+data);</div><div class="line">        responseCallback(<span class="string">'js执行过了'</span>);</div><div class="line">     &#125;)</div><div class="line">    <span class="comment">// 注册其他的功能</span></div><div class="line">    <span class="comment">//bridge.regsiterHandler.....</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<ul>
+<li>Native调用功能的别名handlerName</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//    // 如果不需要参数，不需要回调，使用这个</span></div><div class="line"><span class="comment">//    [_webViewBridge callHandler:@"testJSFunction"];</span></div><div class="line"><span class="comment">//    // 如果需要参数，不需要回调，使用这个</span></div><div class="line"><span class="comment">//    [_webViewBridge callHandler:@"testJSFunction" data:@"一个字符串"];</span></div><div class="line">    <span class="comment">// 如果既需要参数，又需要回调，使用这个</span></div><div class="line">    [_webViewBridge callHandler:<span class="string">@"testJSFunction"</span> data:<span class="string">@"一个字符串"</span> responseCallback:^(<span class="keyword">id</span> responseData) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"调用完JS后的回调：%@"</span>,responseData);</div><div class="line">    &#125;];</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
+          
+            <a href="/tags/JS/" rel="tag">#JS</a>
+          
+            <a href="/tags/Hybrid/" rel="tag">#Hybrid</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/19/20160819-blog/" rel="next" title="免费个人blog快速搭建(Hexo+GitHub)">
+                <i class="fa fa-chevron-left"></i> 免费个人blog快速搭建(Hexo+GitHub)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/08/20161008MAC上git版本管理软件SourceTree的使用/" rel="prev" title="MAC上git版本管理软件SourceTree的使用">
+                MAC上git版本管理软件SourceTree的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.png"
+               alt="Sweetfish" />
+          <p class="site-author-name" itemprop="name">Sweetfish</p>
+          <p class="site-description motion-element" itemprop="description">敲键盘按快门玩PS的厨子</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.sweetfish.cn" target="_blank" title="Cover">
+                  
+                    <i class="fa fa-fw fa-heartbeat"></i>
+                  
+                  Cover
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sweetfish" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1821742240/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://fish.sweetfish.cn" target="_blank" title="Fish">
+                  
+                    <i class="fa fa-fw fa-camera-retro"></i>
+                  
+                  Fish
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-Hybrid-App简要介绍"><span class="nav-number">1.</span> <span class="nav-text">0.Hybrid App简要介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-目前JS与OC相互调用的方式"><span class="nav-number">2.</span> <span class="nav-text">1.目前JS与OC相互调用的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-拦截URL"><span class="nav-number">3.</span> <span class="nav-text">2.拦截URL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-UIWwbView中的实现"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 UIWwbView中的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建UIWebView，加载本地HTML"><span class="nav-number">3.1.1.</span> <span class="nav-text">创建UIWebView，加载本地HTML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地HTML文件"><span class="nav-number">3.1.2.</span> <span class="nav-text">本地HTML文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OC中拦截URL"><span class="nav-number">3.1.3.</span> <span class="nav-text">OC中拦截URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OC回调JS"><span class="nav-number">3.1.4.</span> <span class="nav-text">OC回调JS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2WKWebView实现方式"><span class="nav-number">3.2.</span> <span class="nav-text">2.2WKWebView实现方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WKWebView的创建："><span class="nav-number">3.2.1.</span> <span class="nav-text">WKWebView的创建：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WKWebView中拦截URL的方法："><span class="nav-number">3.2.2.</span> <span class="nav-text">WKWebView中拦截URL的方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WKWebView中OC调用JS方法："><span class="nav-number">3.2.3.</span> <span class="nav-text">WKWebView中OC调用JS方法：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-MessageHandler"><span class="nav-number">4.</span> <span class="nav-text">3.MessageHandler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1MessageHandler的好处"><span class="nav-number">4.1.</span> <span class="nav-text">3.1MessageHandler的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2实现原理"><span class="nav-number">4.2.</span> <span class="nav-text">3.2实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3OC中配置MessageHandler"><span class="nav-number">4.3.</span> <span class="nav-text">3.3OC中配置MessageHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4JS中的使用"><span class="nav-number">4.4.</span> <span class="nav-text">3.4JS中的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5OC调用JS"><span class="nav-number">4.5.</span> <span class="nav-text">3.5OC调用JS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-JavaScriptCore"><span class="nav-number">5.</span> <span class="nav-text">4.JavaScriptCore</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1JavaScriptCore说明"><span class="nav-number">5.1.</span> <span class="nav-text">4.1JavaScriptCore说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2实现步骤"><span class="nav-number">5.2.</span> <span class="nav-text">4.2实现步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-WebViewJavascriptBridge"><span class="nav-number">6.</span> <span class="nav-text">5.WebViewJavascriptBridge</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1UIWebView中的实现"><span class="nav-number">6.1.</span> <span class="nav-text">5.1UIWebView中的实现</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sweetfish</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
